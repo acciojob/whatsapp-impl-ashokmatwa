@@ -64,8 +64,8 @@ public class WhatsappRepository {
 
     public int createMessage(String content){
         messageId++;
-        //database ??
-        contentMap.put(messageId, content);
+        contentMap.put(messageId, content);//database ??
+        Message message = new Message(messageId, content);
 
         return messageId;
     }
@@ -86,6 +86,7 @@ public class WhatsappRepository {
         if(groupMessageMap.containsKey(group)){
             msg = groupMessageMap.get(group);
             msg.add(message);
+            groupMessageMap.put(group, msg);
             return msg.size();
         }
         //not present --> chat not started
@@ -98,7 +99,8 @@ public class WhatsappRepository {
         if(!adminMap.containsKey(group))//group does not exist
             return "Group does not exist";
 
-        if(adminMap.get(group) != approver)//approver is not the current admin of the group
+        //if(adminMap.get(group) != approver)//approver is not the current admin of the group
+        if(!adminMap.get(group).equals(approver))
             return "Approver does not have rights";
 
         List<User> list = groupUserMap.get(group);
